@@ -3,6 +3,7 @@ def leftmost_nodes_sum(array)
 end
 
 def get_nodes(array, i, total)
+  m = []
   while i < array.size
     total += array[i]
     i = (2 * i) + 1
