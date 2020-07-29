@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Node
   attr_reader :data
   attr_accessor :left, :right
@@ -9,44 +7,44 @@ class Node
   end
 end
 
-def array_to_binary_search_tree(root_node, array, i)
-  return nil if i >= array.length || array[i].zero?
-
-  root_node = Node.new(array[0]) if root_node.nil?
-  node = Node.new(array[i])
-  insert_node(root_node, node)
-
-  array_to_binary_search_tree(root_node, array, i + 1)
-  root_node
-end
-
-def insert_node(root_node, new_node)
-  loop do
-    if root_node.data >= new_node.data
-      break root_node.left = new_node if root_node.left.nil?
-
-      root_node = root_node.left
-    else
-      break root_node.right = new_node if root_node.right.nil?
-
-      root_node = root_node.right
+class BST
+  def insert(node)
+    parent = nil
+    current = @root
+      
+    until current.nil?
+      parent = current
+      if node.data <= current.data
+        current = current.left
+      elsif node.data > current.data
+        current = current.right
+      end       
+    end
+    
+    if parent.nil?
+      @root = node
+    elsif node.data <= parent.data
+      parent.left = node
+    elsif node.data > parent.data
+      parent.right = node
     end
   end
-  root_node
+
+  def pre_order(node = @root)
+    return '' if node.nil?  
+    result = "#{node.data} "
+    result += pre_order(node.left)
+    result += pre_order(node.right)
+  end
 end
 
-def pre_order(node)
-  return '' if node.nil?
-
-  result = "#{node.data} "
-  result += pre_order(node.left)
-  result + pre_order(node.right)
-end
 
 def binary_search_tree(array)
-  # your code here
-  tree = array_to_binary_search_tree(nil, array, 1)
-  pre_order(tree).strip
+  tree = BST.new
+  array.each do |e|
+    tree.insert(Node.new(e))
+  end
+  tree.pre_order
 end
 
 puts binary_search_tree([8, 3, 10, 1, 6, 14, 4, 7, 13])
