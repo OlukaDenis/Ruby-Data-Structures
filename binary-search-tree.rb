@@ -1,38 +1,35 @@
 class Node
-  attr_reader :data
+  attr_reader :value
   attr_accessor :left, :right
 
-  def initialize(data)
-    @data = data
+  def initialize(val)
+    @value = val
   end
 end
 
 class BST
-  def insert(node)
-    parent = nil
-    current = @root
-      
-    until current.nil?
-      parent = current
-      if node.data <= current.data
-        current = current.left
-      elsif node.data > current.data
-        current = current.right
-      end       
+  def insert(new_node, head = @root)
+    
+    if @root.nil?
+      @root = new_node
+      return
     end
     
-    if parent.nil?
-      @root = node
-    elsif node.data <= parent.data
-      parent.left = node
-    elsif node.data > parent.data
-      parent.right = node
+    if head.nil?
+      return new_node
     end
+    
+    if new_node.value < head.value
+      head.left = insert(new_node, head.left)
+    elsif new_node.value > head.value
+      head.right = insert(new_node, head.right)
+    end
+    return head
   end
 
   def pre_order(node = @root)
     return '' if node.nil?  
-    result = "#{node.data} "
+    result = "#{node.value} "
     result += pre_order(node.left)
     result += pre_order(node.right)
   end
