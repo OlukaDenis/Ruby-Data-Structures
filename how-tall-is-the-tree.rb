@@ -15,14 +15,11 @@ def array_to_tree(array, i)
   node = Node.new(array[i])
   node.left = array_to_tree(array, 2 * i + 1)
   node.right = array_to_tree(array, 2 * i + 2)
-
   node
 end
 
 def binary_tree_height(array_tree)
-  # write your code here
   tree = array_to_tree(array_tree, 0)
-
   tree_height(tree)
 end
 
